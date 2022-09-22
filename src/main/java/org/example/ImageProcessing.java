@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-
+import java.util.*;
 public abstract class ImageProcessing {
     static String path = "assets/";
     public static void combineTwoImages(String user1, String user2, String channelId, String killMessage) throws IOException {
@@ -72,6 +72,14 @@ public abstract class ImageProcessing {
             return;
         }
         send(generated, killMessage, channelId);
+    }
+
+    public static boolean randomChance(int one_in){
+        if(one_in == 1) return true;
+        if(one_in == 0) return false;
+        Random random = new Random();
+       if( random.nextInt(one_in) == 1) return true;
+       return false;
     }
 
     private static void send(String fileName, String killMessage, String channelId){
