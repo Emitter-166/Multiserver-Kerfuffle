@@ -53,7 +53,6 @@ public class Commands extends ListenerAdapter {
 
     public void onButtonInteraction(ButtonInteractionEvent e){
         String[] id = e.getButton().getId().split("-");
-        System.out.println(Arrays.toString(id));
         if(id[1].equalsIgnoreCase("joining")){
             if(Main.games.containsKey(id[0])){
               String response = Main.games.get(id[0]).addPlayer(e.getUser());

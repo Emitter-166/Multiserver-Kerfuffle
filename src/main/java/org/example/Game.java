@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.example.Database.connection;
@@ -31,7 +30,7 @@ public class Game {
     Game(String channelId){
         this.channelId = channelId;
     }
-    public static Message starterMessage = null;
+    Message starterMessage = null;
 
     void sendJoiningMessage(String title){
         if(channelId == null) return;
@@ -66,7 +65,7 @@ public class Game {
        profilePics.put(user.getId(), user.getEffectiveAvatarUrl());
        playerNames.put(user.getId(), user.getName());
        points.put(user.getId(), 0);
-
+        if(starterMessage == null) return "";
        starterMessage.editMessageEmbeds(new EmbedBuilder()
                .setTitle(title)
                .addField("Gathering Players", "" +
@@ -83,7 +82,6 @@ public class Game {
         remaining.append("``` \n");
         playerNames.forEach((id, playerName) -> remaining.append(playerName).append("\n"));
         remaining.append("```");
-        System.out.println(remaining);
         Main.jda.getTextChannelById(channelId).sendMessageEmbeds(new EmbedBuilder()
                 .setTitle(playerNames.size() + " Players remaining")
                 .setDescription(remaining.toString())
@@ -113,6 +111,7 @@ public class Game {
                    throw new RuntimeException(e);
                }
            }
+           Main.games.remove(channelId);
         };
         Thread thread = new Thread(run);
         thread.start();
@@ -124,7 +123,7 @@ public class Game {
             }
             if(randomChance(7) || players.size() == 3){
                 //single
-                String killedId = players.get((int)Math.round(Math.random() * players.size()));
+                String killedId = players.get((int)Math.floor(Math.random() * players.size()));
                 String killedName = playerNames.get(killedId);
                 String death_message = "**" + connection.createStatement().executeQuery("SELECT * FROM death_messages ORDER BY RANDOM() LIMIT 1")
                         .getString("message").replace("x ", killedName + " ").replace(" x ", " " + killedName + " ") + "**";
@@ -140,7 +139,7 @@ public class Game {
                 
                 String killedId;
                 do{
-                    killedId = players.get((int) Math.round(Math.random() * players.size()));
+                    killedId = players.get((int) Math.floor(Math.random() * players.size()));
                 }while(killerId.equalsIgnoreCase(killedId));
                 String killed_name = playerNames.get(killedId);
                 String kill_message = "**" + connection.createStatement().executeQuery("SELECT * FROM kill_messages ORDER BY RANDOM() LIMIT 1")

@@ -16,15 +16,15 @@ public abstract class ImageProcessing {
         BufferedImage pfp1 = ImageIO.read(new URL(Main.games.get(channelId).profilePics.get(user1)));
         BufferedImage pfp2 = ImageIO.read(new URL(Main.games.get(channelId).profilePics.get(user2)));
 
-        BufferedImage frame = ImageIO.read(new File(path +"dual.png"));
+        BufferedImage frame = ImageIO.read(new File(path + "dual.png"));
         BufferedImage overlay = ImageIO.read(new File(path + "frame2.png"));
         BufferedImage vsOverlay = ImageIO.read(new File(path + "vs.png"));
 
         BufferedImage finalImage = new BufferedImage(frame.getWidth(), frame.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        String generated = user1+"vs"+user2+".png";
+        String generated = user1 + "vs" + user2 + ".png";
 
         Graphics2D g = finalImage.createGraphics();
-        g.drawImage(frame, 0,0, null);
+        g.drawImage(frame, 0, 0, null);
         g.drawImage(pfp1, 33, 124, 199, 193, null);
         g.drawImage(pfp2, 266, 124, 200, 192, null);
         g.drawImage(overlay, 0, 0, null);
