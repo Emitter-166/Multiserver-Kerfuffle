@@ -1,6 +1,7 @@
 package org.example;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -75,7 +76,25 @@ public class Commands extends ListenerAdapter {
                                 .setTitle("That game is not running! ⚔️")
                                 .build()).setEphemeral(true).queue();
             }
-        }else{
+        }else if(id[1].equalsIgnoreCase("starter")){
+            if(!e.getMember().hasPermission(Permission.MODERATE_MEMBERS)){
+                e.getInteraction().replyEmbeds(new EmbedBuilder()
+                        .setTitle("You aren't allowed to do that! ⛔")
+                        .build()).setEphemeral(true).queue();
+                return;
+            }
+            if(Main.games.get(e.getChannel().getId()).gameStarted){
+                e.getInteraction().replyEmbeds(new EmbedBuilder()
+                        .setTitle("The game has already started! ⛔")
+                        .build()).setEphemeral(true).queue();
+                return;
+            }
+            if(Main.games.get(e.getChannel().getId()).players.size() >= 2){
+                e.getInteraction().replyEmbeds(new EmbedBuilder()
+                        .setTitle("At least 3 players required ⛔")
+                        .build()).setEphemeral(true).queue();
+                return;
+            }
             if(Main.games.containsKey(id[0])){
                 Main.games.get(id[0]).process();
                 e.getInteraction().replyEmbeds(new EmbedBuilder()

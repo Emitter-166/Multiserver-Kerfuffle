@@ -142,9 +142,11 @@ public class Game {
                     killedId = players.get((int) Math.floor(Math.random() * players.size()));
                 }while(killerId.equalsIgnoreCase(killedId));
                 String killed_name = playerNames.get(killedId);
+
                 String kill_message = "**" + connection.createStatement().executeQuery("SELECT * FROM kill_messages ORDER BY RANDOM() LIMIT 1")
                         .getString("message").replace("x ", killer_name + " ").replace(" x ", " " + killer_name + " ")
                         .replace(" y ", " " + killed_name + " ") + "**";
+
                 if(kill_message == null) kill_message = killer_name + " killed " + killed_name;
                 ImageProcessing.combineTwoImages(killerId, killedId, channelId, kill_message);
                 points.put(killerId, points.get(killerId) + 1);

@@ -62,7 +62,7 @@ public abstract class ImageProcessing {
                     .setDescription(String.format(":tada: <@%s> won this game! \n" +
                             ":skull: **Total kills:** `%s` \n" +
                             ":stopwatch: **Time survived:** `%s` seconds\n" +
-                            ":trophy: **Total win in server:** `%s`", userId, kills , (System.currentTimeMillis() - started) / 1000, wins));
+                            ":trophy: **Total wins:** `%s`", userId, kills , (System.currentTimeMillis() - started) / 1000, wins));
 
             File file = new File(generated);
             Main.jda.getTextChannelById(channelId).sendMessageEmbeds(builder.build())
